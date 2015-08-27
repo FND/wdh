@@ -26,18 +26,25 @@ def articles():
     with open(STORE) as fh:
         store = yaml.load(fh)
     # add article IDs
-    articles = ((i, article) for i, article in enumerate(store["articles"]))
+    articles = ((i, article) for i, article in enumerate(_retrieve("articles")))
     return render_template("articles.html", title="articles", articles=articles)
 
 
 @app.route("/articles/<article_id>")
 def article(article_id):
-    abort(501)
+    article = _retrieve("articles")[int(article_id)]
+    return render_template("article.html", title="article", article=article)
 
 
 @app.route("/authors")
 def authors():
     abort(501)
+
+
+def _retrieve(category):
+    with open(STORE) as fh:
+        store = yaml.load(fh)
+    return store[category]
 
 
 if __name__ == "__main__":

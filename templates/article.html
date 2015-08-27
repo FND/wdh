@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<article itemtype="http://vocab.example.org/article" itemscope>
+	<a href="{{ url_for("article", article_id=aid) }}" rel="self">
+		<span itemprop="title">{{ article.title }}</span> {{- "" -}}
+	</a>
+
+	published
+	<time datetime="{{ article.published }}" itemprop="published">
+		{{ article.published }}
+	</time>
+
+	by
+	<ul itemprop="authors" itemscope>
+		{% for author in article.authors %}
+		<li itemprop="name">{{ author }}</li>
+		{% endfor %}
+	</ul>
+
+	<span itemprop="edits">{{ article.edits }}</span> edits
+
+	<h3>tags</h3>
+	<ul itemprop="tags" itemscope>
+		{% for tag in article.tags %}
+		<li itemprop="tag">{{ tag }}</li>
+		{% endfor %}
+	</ul>
+
+	<p itemprop="content">{{ article.content }}</p>
+</article>
+{% endblock %}
