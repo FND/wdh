@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<ul>
+	{% for rel, (caption, url) in resources.items() %}
+	<li>
+		<a href="{{ url }}" rel="{{ rel }}">{{ caption }}</a>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
