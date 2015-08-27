@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
+import yaml
+
 from flask import Flask, render_template, abort, url_for
 
 
 app = Flask(__name__)
 
 RELS = "http://rels.example.org"
+STORE = "store.yml" # TODO: read from config
 
 
 @app.route("/")
@@ -20,6 +23,15 @@ def index():
 
 @app.route("/articles")
 def articles():
+    with open(STORE) as fh:
+        store = yaml.load(fh)
+    # add article IDs
+    articles = ((i, article) for i, article in enumerate(store["articles"]))
+    return render_template("articles.html", title="articles", articles=articles)
+
+
+@app.route("/articles/<article_id>")
+def article(article_id):
     abort(501)
 
 

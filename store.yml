@@ -1,0 +1,15 @@
+articles:
+
+- title: Hello World
+  tags: [foo, bar]
+  authors: [FND, tillsc]
+  published: !!timestamp "2015-08-27"
+  edits: 5
+  content: lorem ipsum dolor sit amet
+
+- title: Lipsum
+  tags: [tmp]
+  authors: [anon]
+  published: !!timestamp "2038-01-19"
+  edits: 0
+  content: …

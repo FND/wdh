@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<ul>
+	{% for aid, article in articles %}
+	<li itemtype="http://vocab.example.org/article" itemscope>
+		<a href="{{ url_for("article", article_id=aid) }}" rel="self">
+			<span itemprop="title">{{ article.title }}</span> {{- "" -}}
+		</a>
+
+		published
+		<time datetime="{{ article.published }}" itemprop="published">
+			{{ article.published }}
+		</time>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
