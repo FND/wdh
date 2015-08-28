@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
+{% block head %}
+<link rel="self" href="{{ url_for("article", article_id=article.id) }}">
+{% endblock %}
+
 {% block body %}
 <article>
 	<dl>
 		<dt>title</dt>
-		<dd>
-			<a href="{{ url_for("article", article_id=aid) }}" rel="self">
-				{{ article.title }}
-			</a>
-		</dd>
+		<dd>{{ article.title }}</dd>
 
 		<dt>published</dt>
 		<dd data-type="boolean">

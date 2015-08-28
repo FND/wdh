@@ -6,13 +6,13 @@
 	<li>
 		<a href="#article{{ article.id }}" rel="http://vocab.example.org/article"></a>
 		<article id="article{{ article.id }}">
+			<a href="{{ url_for("article", article_id=article.id) }}" rel="self">
+				{{ article.title }}
+			</a>
+
 			<dl>
 				<dt>title</dt>
-				<dd>
-					<a href="{{ url_for("article", article_id=article.id) }}" rel="self">
-						{{ article.title }}
-					</a>
-				</dd>
+				<dd>{{ article.title }}</dd>
 
 				{% if article.pubdate %}
 				<dt>pubdate</dt>

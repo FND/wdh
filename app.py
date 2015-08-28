@@ -25,15 +25,15 @@ def index():
 
 @app.route("/articles")
 def articles():
-    articles = (Article.from_dict(article, aid)
+    articles = (Article.from_dict(aid, article)
             for aid, article in enumerate(_retrieve("articles")))
     return render_template("articles.html", title="articles", articles=articles)
 
 
-@app.route("/articles/<article_id>")
+@app.route("/articles/<int:article_id>")
 def article(article_id):
-    article = _retrieve("articles")[int(article_id)]
-    article = Article.from_dict(article)
+    article = _retrieve("articles")[article_id]
+    article = Article.from_dict(article_id, article)
     return render_template("article.html", title="article", article=article)
 
 
@@ -53,7 +53,8 @@ def author(handle):
 
 class Article:
 
-    def __init__(self, title, authors, content, tags=None, pubdate=None, edits=None):
+    def __init__(self, id, title, authors, content, tags=None, pubdate=None, edits=None):
+        self.id = id
         self.title = title
         self.authors = authors
         self.tags = tags or []
@@ -66,13 +67,10 @@ class Article:
         return date.today() > self.pubdate if self.pubdate else False
 
     @staticmethod
-    def from_dict(article, article_id=None):
-        article = Article(article["title"], article["authors"],
+    def from_dict(id, article): # XXX: slightly awkward and store-specific
+        return Article(id, article["title"], article["authors"],
                 article["content"], article.get("tags"),
                 article.get("pubdate"), article.get("edits"))
-        if article_id is not None:
-            article.id = article_id
-        return article
 
 
 class Author:

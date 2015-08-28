@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 
+{% block head %}
+<link rel="self" href="{{ url_for("author", handle=author.handle) }}">
+{% endblock %}
+
 {% block body %}
 <article>
 	<dl>
 		<dt>handle</dt>
-		<dd>
-			<a href="{{ url_for("author", handle=author.handle) }}" rel="self">
-				{{ author.handle }}
-			</a>
-		</dd>
+		<dd>{{ author.handle }}</dd>
 
 		{% if author.name %}
 		<dt>name</dt>
