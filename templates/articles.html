@@ -14,12 +14,14 @@
 					</a>
 				</dd>
 
-				<dt>published</dt>
+				{% if article.pubdate %}
+				<dt>pubdate</dt>
 				<dd>
-					<time datetime="{{ article.published }}">
-						{{ article.published }}
+					<time datetime="{{ article.pubdate }}">
+						{{ article.pubdate }}
 					</time>
 				</dd>
+				{% endif %}
 			</dl>
 		</article>
 	</li>

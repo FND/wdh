@@ -11,11 +11,16 @@
 		</dd>
 
 		<dt>published</dt>
-		<dd>
-			<time datetime="{{ article.published }}">
-				{{ article.published }}
-			</time>
+		<dd data-type="boolean">
+			{{ "true" if article.published else "false" }}
 		</dd>
+
+		{% if article.pubdate %}
+		<dt>pubdate</dt>
+		<dd>
+			<time datetime="{{ article.pubdate }}">{{ article.pubdate }}</time>
+		</dd>
+		{% endif %}
 
 		<dt>authors</dt>
 		<dd>
