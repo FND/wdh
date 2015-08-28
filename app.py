@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
+import math
+
 import yaml
 
 from datetime import date
-import math
 
-from flask import Flask, render_template, abort, url_for
+from flask import Flask, render_template, url_for
 
 
 app = Flask(__name__)
@@ -99,16 +100,13 @@ def _retrieve(category):
     return store[category]
 
 
-@app.template_filter('to_friendly_date')
-def to_friendly_date(src_date):
-    now = date.today()
-    diff = now - src_date
+@app.template_filter("friendly_date")
+def friendly_date(src_date):
+    diff = date.today() - src_date
     months = math.floor(diff.days / 30)
     years = math.floor(months / 12)
 
-    suffix = "in future"
-    if diff.days > 0:
-        suffix = "ago"
+    suffix = "ago" if diff.days > 0 else "in future"
 
     if diff.days == 0:
         text = "Today"
