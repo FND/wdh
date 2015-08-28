@@ -1,15 +1,17 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<h1>{{ title }}</h1>
 <ul>
 	{% for article in articles %}
 	<li>
 		<a href="#article{{ article.id }}" rel="http://vocab.example.org/article"></a>
 		<article id="article{{ article.id }}">
-			<a href="{{ url_for("article", article_id=article.id) }}" rel="self">
-				{{ article.title }}
-			</a>
-
+			<h1>
+				<a href="{{ url_for("article", article_id=article.id) }}" rel="self">
+					{{ article.title }}
+				</a>
+			</h1>
 			<dl>
 				<dt>title</dt>
 				<dd>{{ article.title }}</dd>
