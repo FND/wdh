@@ -39,7 +39,16 @@ def article(article_id):
 
 @app.route("/authors")
 def authors():
-    abort(501)
+    authors = (Author.from_dict(handle, details) for handle, details
+            in _retrieve("authors").items())
+    return render_template("authors.html", title="authors", authors=authors)
+
+
+@app.route("/authors/<handle>")
+def author(handle):
+    author = _retrieve("authors")[handle]
+    author = Author.from_dict(handle, author)
+    return render_template("author.html", title="author", author=author)
 
 
 class Article:
@@ -64,6 +73,18 @@ class Article:
         if article_id is not None:
             article.id = article_id
         return article
+
+
+class Author:
+
+    def __init__(self, handle, name=None, website=None):
+        self.handle = handle # TODO: validate (alphanumerics only)
+        self.name = name
+        self.website = website
+
+    @staticmethod
+    def from_dict(handle, details): # XXX: slightly awkward and store-specific
+        return Author(handle, details.get("name"), details.get("website"))
 
 
 def _retrieve(category):

@@ -8,8 +8,19 @@ articles:
   content: lorem ipsum dolor sit amet
 
 - title: Lipsum
-  authors: [anon]
+  authors: [stilkov]
   tags: [tmp]
   pubdate: !!timestamp "2038-01-19"
   edits: 0
   content: …
+
+authors:
+
+  FND: {}
+
+  tillsc:
+    website: https://twitter.com/tillsc
+
+  stilkov:
+    name: Stefan Tilkov
+    website: https://www.innoq.com/blog/st/

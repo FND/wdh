@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<article>
+	<dl>
+		<dt>handle</dt>
+		<dd>
+			<a href="{{ url_for("author", handle=author.handle) }}" rel="self">
+				{{ author.handle }}
+			</a>
+		</dd>
+
+		{% if author.name %}
+		<dt>name</dt>
+		<dd>{{ author.name }}</dd>
+		{% endif %}
+
+		{% if author.website %}
+		<dt>website</dt>
+		<dd>
+			<a href="{{ author.website }}">{{ author.website }}</a>
+		</dd>
+		{% endif %}
+	</dl>
+</article>
+{% endblock %}

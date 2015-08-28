@@ -25,8 +25,13 @@
 		<dt>authors</dt>
 		<dd>
 			<ul>
-				{% for author in article.authors %}
-				<li>{{ author }}</li>
+				{% for handle in article.authors %}
+				<li>
+					<a href="{{ url_for("author", handle=handle) }}"
+							rel="http://vocab.example.org/author">
+						{{ handle }}
+					</a>
+				</li>
 				{% endfor %}
 			</ul>
 		</dd>

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<ul>
+	{% for author in authors %}
+	<li>
+		<a href="{{ url_for("author", handle=author.handle) }}"
+				rel="http://vocab.example.org/author">
+			{% if author.name %}
+			{{ author.name }}
+			({{ author.handle }})
+			{% else %}
+			{{ author.handle }}
+			{% endif %}
+		</a>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
