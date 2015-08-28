@@ -19,7 +19,7 @@
 		{% if article.pubdate %}
 		<dt>pubdate</dt>
 		<dd>
-			<time datetime="{{ article.pubdate }}">{{ article.pubdate }}</time>
+			<time datetime="{{ article.pubdate }}">{{ article.pubdate | to_friendly_date }}</time>
 		</dd>
 		{% endif %}
 

@@ -3,6 +3,7 @@
 import yaml
 
 from datetime import date
+import math
 
 from flask import Flask, render_template, abort, url_for
 
@@ -96,6 +97,28 @@ def _retrieve(category):
     with open(STORE) as fh:
         store = yaml.load(fh)
     return store[category]
+
+
+@app.template_filter('to_friendly_date')
+def to_friendly_date(src_date):
+    now = date.today()
+    diff = now - src_date
+    months = math.floor(diff.days / 30)
+    years = math.floor(months / 12)
+
+    suffix = "in future"
+    if diff.days > 0:
+        suffix = "ago"
+
+    if diff.days == 0:
+        text = "Today"
+    elif abs(diff.days) < 30:
+        text = "{:.0f} days {}".format(abs(diff.days), suffix)
+    elif abs(months) < 12:
+        text = "{:.0f} months {}".format(abs(months), suffix)
+    else:
+        text = "{:.0f} years {}".format(abs(years), suffix)
+    return text
 
 
 if __name__ == "__main__":
