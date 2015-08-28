@@ -2,14 +2,14 @@
 
 {% block body %}
 <ul>
-	{% for aid, article in articles %}
+	{% for article in articles %}
 	<li>
-		<a href="#article{{ aid }}" rel="http://vocab.example.org/article"></a>
-		<article id="article{{ aid }}">
+		<a href="#article{{ article.id }}" rel="http://vocab.example.org/article"></a>
+		<article id="article{{ article.id }}">
 			<dl>
 				<dt>title</dt>
 				<dd>
-					<a href="{{ url_for("article", article_id=aid) }}" rel="self">
+					<a href="{{ url_for("article", article_id=article.id) }}" rel="self">
 						{{ article.title }}
 					</a>
 				</dd>

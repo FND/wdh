@@ -25,11 +25,8 @@ def index():
 
 @app.route("/articles")
 def articles():
-    with open(STORE) as fh:
-        store = yaml.load(fh)
-    # add article IDs
-    articles = ((i, Article.from_dict(article))
-            for i, article in enumerate(_retrieve("articles")))
+    articles = (Article.from_dict(article, aid)
+            for aid, article in enumerate(_retrieve("articles")))
     return render_template("articles.html", title="articles", articles=articles)
 
 
@@ -64,7 +61,7 @@ class Article:
         article = Article(article["title"], article["authors"],
                 article["content"], article.get("tags"),
                 article.get("pubdate"), article.get("edits"))
-        if article_id:
+        if article_id is not None:
             article.id = article_id
         return article
 
