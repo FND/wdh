@@ -3,15 +3,25 @@
 {% block body %}
 <ul>
 	{% for aid, article in articles %}
-	<li itemtype="http://vocab.example.org/article" itemscope>
-		<a href="{{ url_for("article", article_id=aid) }}" rel="self">
-			<span itemprop="title">{{ article.title }}</span> {{- "" -}}
-		</a>
+	<li>
+		<a href="#article{{ aid }}" rel="http://vocab.example.org/article"></a>
+		<article id="article{{ aid }}">
+			<dl>
+				<dt>title</dt>
+				<dd>
+					<a href="{{ url_for("article", article_id=aid) }}" rel="self">
+						{{ article.title }}
+					</a>
+				</dd>
 
-		published
-		<time datetime="{{ article.published }}" itemprop="published">
-			{{ article.published }}
-		</time>
+				<dt>published</dt>
+				<dd>
+					<time datetime="{{ article.published }}">
+						{{ article.published }}
+					</time>
+				</dd>
+			</dl>
+		</article>
 	</li>
 	{% endfor %}
 </ul>

@@ -1,32 +1,45 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<article itemtype="http://vocab.example.org/article" itemscope>
-	<a href="{{ url_for("article", article_id=aid) }}" rel="self">
-		<span itemprop="title">{{ article.title }}</span> {{- "" -}}
-	</a>
+<article>
+	<dl>
+		<dt>title</dt>
+		<dd>
+			<a href="{{ url_for("article", article_id=aid) }}" rel="self">
+				{{ article.title }}
+			</a>
+		</dd>
 
-	published
-	<time datetime="{{ article.published }}" itemprop="published">
-		{{ article.published }}
-	</time>
+		<dt>published</dt>
+		<dd>
+			<time datetime="{{ article.published }}">
+				{{ article.published }}
+			</time>
+		</dd>
 
-	by
-	<ul itemprop="authors" itemscope>
-		{% for author in article.authors %}
-		<li itemprop="name">{{ author }}</li>
-		{% endfor %}
-	</ul>
+		<dt>authors</dt>
+		<dd>
+			<ul>
+				{% for author in article.authors %}
+				<li>{{ author }}</li>
+				{% endfor %}
+			</ul>
+		</dd>
 
-	<span itemprop="edits">{{ article.edits }}</span> edits
+		<dt>tags</dt>
+		<dd>
+			<ul>
+				{% for tag in article.tags %}
+				<li>{{ tag }}</li>
+				{% endfor %}
+			</ul>
+		</dd>
 
-	<h3>tags</h3>
-	<ul itemprop="tags" itemscope>
-		{% for tag in article.tags %}
-		<li itemprop="tag">{{ tag }}</li>
-		{% endfor %}
-	</ul>
+		<dt>edits</dt>
+		<dd data-type="number">{{ article.edits }}</dd>
 
-	<p itemprop="content">{{ article.content }}</p>
+		<dt>content</dt>
+		<dd data-type="html">{{ article.content }}</dd>
+	</dl>
 </article>
 {% endblock %}
