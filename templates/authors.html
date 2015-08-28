@@ -6,12 +6,7 @@
 	<li>
 		<a href="{{ url_for("author", handle=author.handle) }}"
 				rel="http://vocab.example.org/author">
-			{% if author.name %}
-			{{ author.name }}
-			({{ author.handle }})
-			{% else %}
-			{{ author.handle }}
-			{% endif %}
+			{{ author.display_name }}
 		</a>
 	</li>
 	{% endfor %}

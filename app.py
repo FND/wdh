@@ -82,6 +82,13 @@ class Author:
         self.name = name
         self.website = website
 
+    @property
+    def display_name(self):
+        if self.name:
+            return "%s (%s)" % (self.name, self.handle)
+        else:
+            return self.handle
+
     @staticmethod
     def from_dict(handle, details): # XXX: slightly awkward and store-specific
         return Author(handle, details.get("name"), details.get("website"))
