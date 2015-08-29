@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import math
 
 import yaml
@@ -12,7 +13,8 @@ from flask import Flask, render_template, url_for
 app = Flask(__name__)
 
 RELS = "http://rels.example.org"
-STORE = "store.yml" # TODO: read from config
+store_location = os.path.dirname(os.path.abspath(__file__))
+STORE = os.path.join(store_location, "store.yml") # TODO: read from config
 
 
 @app.route("/")
