@@ -6,7 +6,7 @@
 	{% for author in authors %}
 	<li>
 		<a href="{{ url_for("author", handle=author.handle) }}"
-				rel="http://vocab.example.org/author">
+				rel="http://rels.example.org/author">
 			{{ author.display_name }}
 		</a>
 	</li>
