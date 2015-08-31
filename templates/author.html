@@ -1,9 +1,5 @@
 {% extends "layout.html" %}
 
-{% block head %}
-<link rel="self" href="{{ url_for("author", handle=author.handle) }}">
-{% endblock %}
-
 {% block body %}
 <article>
 	<h1>{{ author.display_name }}</h1>

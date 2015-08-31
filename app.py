@@ -22,35 +22,40 @@ def index():
             url_for("articles", _external=True))
     resources["%s/authors" % RELS] = ("authors",
             url_for("authors", _external=True))
-    return render_template("index.html", title="index", resources=resources)
+    return render_template("index.html", title="index",
+            self_uri=url_for("index"), resources=resources)
 
 
 @app.route("/articles")
 def articles():
     articles = (Article.from_dict(aid, article)
             for aid, article in enumerate(_retrieve("articles")))
-    return render_template("articles.html", title="articles", articles=articles)
+    return render_template("articles.html", title="articles",
+            self_uri=url_for("articles"), articles=articles)
 
 
 @app.route("/articles/<int:article_id>")
 def article(article_id):
     article = _retrieve("articles")[article_id]
     article = Article.from_dict(article_id, article)
-    return render_template("article.html", title="article", article=article)
+    return render_template("article.html", title="article",
+            self_uri=url_for("article", article_id=article.id), article=article)
 
 
 @app.route("/authors")
 def authors():
     authors = (Author.from_dict(handle, details) for handle, details
             in _retrieve("authors").items())
-    return render_template("authors.html", title="authors", authors=authors)
+    return render_template("authors.html", title="authors",
+            self_uri=url_for("authors"), authors=authors)
 
 
 @app.route("/authors/<handle>")
 def author(handle):
     author = _retrieve("authors")[handle]
     author = Author.from_dict(handle, author)
-    return render_template("author.html", title="author", author=author)
+    return render_template("author.html", title="author",
+            self_uri=url_for("author", handle=author.handle), author=author)
 
 
 @app.template_filter("friendly_date")
