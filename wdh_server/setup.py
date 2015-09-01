@@ -1,6 +1,6 @@
 META = {
     "install_requires": ["flask", "pyyaml"]
-    "extras": {
+    "extras_require": {
         "testing": ["pep8"]
     }
 }
