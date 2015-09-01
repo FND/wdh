@@ -6,7 +6,13 @@ def test_traversal():
         "http://example.org": RESPONSES["http://example.org"]
     })
     client.enter("http://example.org")
+
+    assert len(client.resources) == 1
+    index = list(client.resources)[0]
+    assert not index.fetched
+
     client.traverse("http://rels.example.org/service")
+    assert index.fetched
 
     assert len(client.resources) == 3
     services = { res.uri: res.caption for res in client.resources }

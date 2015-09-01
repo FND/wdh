@@ -2,7 +2,9 @@ import httplib2
 
 from collections import defaultdict
 
-from pyquery import PyQuery as pq
+from pyquery import PyQuery as pq # XXX: does not belong here!?
+
+from .parser import extract_properties, extract_text
 
 
 class Client:
@@ -67,8 +69,8 @@ class Resource:
             return self._props
         except AttributeError:
             self._props = PropertyList(self.missing_property_handler)
-            # TODO: parse document
-            return self._props
+
+        return self._props
 
     @property
     def document(self):
@@ -84,9 +86,13 @@ class Resource:
         # TODO: reset cached attributes?
         self.fetched = True
 
-    def missing_property_handler(self, props, key):
+    def missing_property_handler(self, key, props): # XXX: `props` unnecessary; identical to `self._props`!?
         if not self.fetched:
             self.fetch()
+
+        for _key, values in extract_properties(self.document): # XXX: belongs into `props`!?
+            props[_key] = values
+
         if key in props: # avoids infinite recursion
             return props[key]
         else:
@@ -115,10 +121,4 @@ class PropertyList(dict):
         try:
             return super().__getitem__(key)
         except KeyError:
-            return self.missing_handler(self, key)
-
-
-def extract_text(node):
-    element = node if isinstance(node, pq) else pq(node)
-    caption = element.text()
-    return caption.strip() if caption else None
+            return self.missing_handler(key, self)
