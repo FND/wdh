@@ -2,7 +2,7 @@ import httplib2
 
 from collections import defaultdict
 
-from .parser import parse, extract_properties, extract_links, extract_text
+from .parser import parse, extract_properties, extract_references, extract_text
 
 
 class Client:
@@ -46,15 +46,21 @@ class Resource:
         self.retriever = retriever # XXX: awkward dependency
 
     @property # TODO: `memoize` decorator
-    def links(self):
+    def links(self): # TODO: rename to "refs"?
         try:
             return self._links
         except AttributeError:
             pass
 
         self._links = defaultdict(set)
-        for rel, uri, caption in extract_links(self.document, self.uri):
+        for rel, uri, caption, props in extract_references(self.document, self.uri):
             resource = Resource(uri, retriever=self.retriever, caption=caption)
+
+            if props:
+                properties = resource.props
+                for key, values in props: # XXX: does not belong here!?
+                    properties[key] = values
+
             self._links[rel].add(resource)
         return self._links
 
