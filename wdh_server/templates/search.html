@@ -2,7 +2,7 @@
 
 {% block body %}
 <h1>{{ title }}</h1>
-<form action="{{ url_for("search") }}" method="get">
+<form name="search" action="{{ url_for("search") }}" method="get">
 	<input type="text" name="term">
 	<select name="category">
 		{% for category, caption in categories %}
