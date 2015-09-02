@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>{{ title }}</h1>
+<form action="{{ url_for("search") }}" method="get">
+	<input type="text" name="term" />
+	<select name="category">
+		<option value="{{ category_author }}">Author</option>
+		<option value="{{ category_article }}">Article</option>
+	</select>
+	<br />
+	<button type="submit">Submit</button>
+</form>
+{% endblock %}
