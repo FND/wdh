@@ -7,7 +7,7 @@ import yaml
 
 from datetime import date
 
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, redirect, url_for, request
 
 
 app = Flask(__name__)
@@ -15,9 +15,6 @@ app = Flask(__name__)
 RELS = "http://rels.example.org"
 store_location = os.path.dirname(os.path.abspath(__file__))
 STORE = os.path.join(store_location, "store.yml") # TODO: read from config
-
-SEARCH_CATEGORY_AUTHOR = "author"
-SEARCH_CATEGORY_ARTICLE = "article"
 
 
 @app.route("/")
@@ -67,32 +64,38 @@ def author(handle):
 
 @app.route('/search')
 def search():
-    term = request.args.get("term", default="").lower()
-    category = request.args.get("category", default="")
+    term = request.args.get("term", "").lower()
+    category = request.args.get("category")
+
+    categories = [("article", "Article"), ("author", "Author")]
 
     if not term or not category:
-        print("return form")
-        return render_template("search.html",
-                               self_uri=url_for("search"),
-                               title="Search",
-                               category_author=SEARCH_CATEGORY_AUTHOR,
-                               category_article=SEARCH_CATEGORY_ARTICLE)
+        return render_template("search.html", self_uri=url_for("search"),
+                title="search", categories=categories)
 
-    if category == SEARCH_CATEGORY_ARTICLE:
-        articles = [Article.from_dict(aid, article)
-                    for aid, article in enumerate(_retrieve("articles"))]
-        articles = [a for a in articles if term in a.title.lower()]
-        return render_template("articles.html", title="Search result: \"{}\" ({})".format(term, category),
+    title = "Search result: \"{}\" ({})".format(term, category),
+
+    if category == "article":
+        articles = []
+        for aid, article in enumerate(_retrieve("articles")):
+            article = Article.from_dict(aid, article)
+            if term in article.title.lower():
+                articles.append(article)
+
+        return render_template("articles.html", title=title,
             self_uri=request.url, articles=articles)
 
-    if category == SEARCH_CATEGORY_AUTHOR:
-        authors = [Author.from_dict(handle, details) for handle, details
-                   in _retrieve("authors").items()]
-        authors = [a for a in authors if term in a.display_name.lower()]
-        return render_template("authors.html", title="Search result: \"{}\" ({})".format(term, category),
+    if category == "author":
+        authors = []
+        for handle, details in _retrieve("authors").items():
+            author = Author.from_dict(handle, details)
+            if term in author.display_name.lower():
+                authors.append(author)
+
+        return render_template("authors.html", title=title,
             self_uri=request.url, authors=authors)
 
-    return redirect('/search')
+    return redirect(url_for("search"))
 
 
 @app.template_filter("friendly_date")
