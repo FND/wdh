@@ -39,7 +39,14 @@ RESPONSES = {
                 <a href="/blog/articles/1" rel="http://rels.example.org/article">#1</a>
             </li>
             <li>
-                <a href="/blog/articles/2" rel="http://rels.example.org/article">#2</a>
+                <a href="#article2" rel="http://rels.example.org/article">#2</a>
+                <article id="article2">
+                    <a href="/blog/articles/2" rel="self"></a>
+                    <dl>
+                        <dt>title</dt>
+                        <dd>Lipsum</dd>
+                    </dl>
+                </article>
             </li>
         </ul>
         """),

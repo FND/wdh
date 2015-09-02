@@ -53,7 +53,7 @@ class Resource:
             pass
 
         self._links = defaultdict(set)
-        for rel, uri, caption in extract_links(self.document):
+        for rel, uri, caption in extract_links(self.document, self.uri):
             resource = Resource(uri, retriever=self.retriever, caption=caption)
             self._links[rel].add(resource)
         return self._links
