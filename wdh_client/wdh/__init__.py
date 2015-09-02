@@ -2,9 +2,7 @@ import httplib2
 
 from collections import defaultdict
 
-from pyquery import PyQuery as pq # XXX: does not belong here!?
-
-from .parser import extract_properties, extract_text
+from .parser import parse, extract_properties, extract_links, extract_text
 
 
 class Client:
@@ -47,7 +45,7 @@ class Resource:
         self.fetched = False
         self.retriever = retriever # XXX: awkward dependency
 
-    @property
+    @property # TODO: `memoize` decorator
     def links(self):
         try:
             return self._links
@@ -55,30 +53,25 @@ class Resource:
             pass
 
         self._links = defaultdict(set)
-        for link in self.document.find("a[rel]"):
-            uri = link.attrib.get("href")
-            rel = link.attrib.get("rel")
-            caption = extract_text(link)
+        for rel, uri, caption in extract_links(self.document):
             resource = Resource(uri, retriever=self.retriever, caption=caption)
             self._links[rel].add(resource)
         return self._links
 
-    @property
+    @property # TODO: `memoize` decorator
     def props(self):
         try:
             return self._props
         except AttributeError:
             self._props = PropertyList(self.missing_property_handler)
+            return self._props
 
-        return self._props
-
-    @property
+    @property # TODO: `memoize` decorator
     def document(self):
         try:
             return self._document
         except AttributeError:
-            self._document = pq(self._content)
-            self.document.make_links_absolute(self.uri)
+            self._document = parse(self._content, self.uri)
             return self._document
 
     def fetch(self):

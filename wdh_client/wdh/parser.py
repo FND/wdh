@@ -1,8 +1,14 @@
 from pyquery import PyQuery as pq
 
 
-def extract_properties(node):
-    element = node if isinstance(node, pq) else pq(node)
+def parse(html, base_uri): # TODO: rename?
+    doc = pq(html)
+    doc.make_links_absolute(base_uri)
+    return doc
+
+
+def extract_properties(container):
+    element = container if isinstance(container, pq) else pq(container)
 
     if element.is_("html"): # XXX: special-casing
         element = element.find("body")
@@ -21,6 +27,16 @@ def extract_properties(node):
             values.append(extract_text(node))
     if key is not None:
         yield key, values
+
+
+def extract_links(container):
+    element = container if isinstance(container, pq) else pq(container)
+
+    for link in element.find("a[rel]"):
+        uri = link.attrib.get("href")
+        rel = link.attrib.get("rel")
+        caption = extract_text(link)
+        yield rel, uri, caption
 
 
 def extract_text(node):
