@@ -3,6 +3,7 @@ import httplib2
 from collections import defaultdict
 
 from .parser import parse, extract_properties, extract_references, extract_text
+from .util import memoized_property
 
 
 class Client:
@@ -45,14 +46,9 @@ class Resource:
         self.fetched = False
         self.retriever = retriever # XXX: awkward dependency
 
-    @property # TODO: `memoize` decorator
+    @memoized_property
     def links(self): # TODO: rename to "refs"?
-        try:
-            return self._links
-        except AttributeError:
-            pass
-
-        self._links = defaultdict(set)
+        links = defaultdict(set)
         for rel, uri, caption, props in extract_references(self.document):
             resource = Resource(uri, retriever=self.retriever, caption=caption)
 
@@ -61,24 +57,16 @@ class Resource:
                 for key, values in props: # XXX: does not belong here!?
                     properties[key] = values
 
-            self._links[rel].add(resource)
-        return self._links
+            links[rel].add(resource)
+        return links
 
-    @property # TODO: `memoize` decorator
+    @memoized_property
     def props(self):
-        try:
-            return self._props
-        except AttributeError:
-            self._props = PropertyList(self.missing_property_handler)
-            return self._props
+        return PropertyList(self.missing_property_handler)
 
-    @property # TODO: `memoize` decorator
+    @memoized_property
     def document(self):
-        try:
-            return self._document
-        except AttributeError:
-            self._document = parse(self._content, self.uri)
-            return self._document
+        return parse(self._content, self.uri)
 
     def fetch(self):
         self._content = self.retriever(self.uri)
