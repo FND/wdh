@@ -6,6 +6,7 @@ import math
 import yaml
 
 from datetime import date
+from collections import OrderedDict
 
 from flask import Flask, render_template, redirect, url_for, request
 
@@ -19,7 +20,7 @@ STORE = os.path.join(store_location, "store.yml") # TODO: read from config
 
 @app.route("/")
 def index():
-    resources = {}
+    resources = OrderedDict()
     resources["%s/articles" % RELS] = ("articles",
             url_for("articles", _external=True))
     resources["%s/authors" % RELS] = ("authors",
