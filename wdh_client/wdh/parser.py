@@ -29,21 +29,20 @@ def extract_properties(container):
         yield key, values
 
 
-def extract_references(container, base_uri=None):
+def extract_references(container):
     element = container if isinstance(container, pq) else pq(container)
 
     for link in element.find("a[rel]"):
-        rel = link.attrib.get("rel")
-        uri = link.attrib.get("href")
+        link = pq(link)
+        rel = link.attr("rel")
+        uri = link.attr("href")
         caption = extract_text(link)
 
-        # resolve local references (i.e. embedded resources)
+        # resolve embedded resource properties
         resource_properties = None
-        if base_uri and uri.startswith("%s#" % base_uri):
-            selector = uri[len(base_uri):]
-            container = element.find(selector)
-            uri = container.find("a[rel=self]").attr("href")
-            resource_properties = extract_properties(container)
+        if link.closest("summary"):
+            resource = link.closest("details").children("article")
+            resource_properties = extract_properties(resource)
 
         yield rel, uri, caption, resource_properties
 

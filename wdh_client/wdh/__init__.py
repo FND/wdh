@@ -53,7 +53,7 @@ class Resource:
             pass
 
         self._links = defaultdict(set)
-        for rel, uri, caption, props in extract_references(self.document, self.uri):
+        for rel, uri, caption, props in extract_references(self.document):
             resource = Resource(uri, retriever=self.retriever, caption=caption)
 
             if props:
