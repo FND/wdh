@@ -166,4 +166,12 @@ def _retrieve(category):
 
 
 if __name__ == "__main__":
-    app.run(debug=True) # TODO: read debug setting from config
+    import sys
+    settings = { # TODO: read from config
+        "debug": True
+    }
+    try:
+        settings["port"] = int(sys.argv[1])
+    except IndexError as exc:
+        pass
+    app.run(**settings)
