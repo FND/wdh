@@ -9,7 +9,15 @@ def memoized_property(getter):
         try:
             return getattr(self, attrib)
         except AttributeError:
-            setattr(self, attrib, getter(self))
-            return getattr(self, attrib)
+            value = getter(self)
+            setattr(self, attrib, value)
+
+            index = getattr(self, "_memoized_properties", None)
+            if not index:
+                self._memoized_properties = set()
+                index = self._memoized_properties
+            index.add((getter.__name__, attrib))
+
+            return value
 
     return property(memoized_getter)

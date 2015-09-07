@@ -69,8 +69,11 @@ class Resource:
         return parse(self._content, self.uri)
 
     def fetch(self):
+        # reset memoized properties
+        for prop, attrib in getattr(self, "_memoized_properties", []):
+            delattr(self, attrib)
+
         self._content = self.retriever(self.uri)
-        # TODO: reset cached attributes?
         self.fetched = True
 
     def missing_property_handler(self, key, props): # XXX: `props` unnecessary; identical to `self._props`!?
