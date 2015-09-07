@@ -21,7 +21,7 @@ class Client:
             if not resource.fetched:
                 resource.fetch()
 
-            for resource in resource.links.get(rel, []):
+            for resource in resource.refs.get(rel, []):
                 references.add(resource)
         self.resources = references
 
@@ -47,8 +47,8 @@ class Resource:
         self.retriever = retriever # XXX: awkward dependency
 
     @memoized_property
-    def links(self): # TODO: rename to "refs"?
-        links = defaultdict(set)
+    def refs(self):
+        refs = defaultdict(set)
         for rel, uri, caption, props in extract_references(self.document):
             resource = Resource(uri, retriever=self.retriever, caption=caption)
 
@@ -57,8 +57,8 @@ class Resource:
                 for key, values in props: # XXX: does not belong here!?
                     properties[key] = values
 
-            links[rel].add(resource)
-        return links
+            refs[rel].add(resource)
+        return refs
 
     @memoized_property
     def props(self):
