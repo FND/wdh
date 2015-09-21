@@ -2,13 +2,13 @@
 a typical explorative usage scenario
 """
 
-from .fixtures import MockClient, loader
+from .fixtures import MockClient
 
 
 def test_exploration():
     client = MockClient({
-        "http://example.org": loader("example.org/index.html"),
-        "http://example.org/blog": loader("example.org/blog.html")
+        "http://example.org": "example.org/index.html",
+        "http://example.org/blog": "example.org/blog.html"
     })
     client.enter("http://example.org")
 

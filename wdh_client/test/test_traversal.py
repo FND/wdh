@@ -32,7 +32,7 @@ def test_multi_traversal():
     assert len(client.resources) == 1
     collection = client.resources[0]
     assert collection.uri == "http://example.org/blog/articles"
-    assert collection.caption is None
+    assert collection.caption == "article index"
 
     client.traverse("http://rels.example.org/article")
     assert len(client.resources) == 2
