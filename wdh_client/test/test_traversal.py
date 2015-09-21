@@ -41,3 +41,39 @@ def test_multi_traversal():
         "http://example.org/blog/articles/1": "#1",
         "http://example.org/blog/articles/2": "#2"
     }
+
+
+def test_link_handling():
+    client = MockClient(RESPONSES)
+    client.enter("http://example.org")
+
+    resource = client.resources[0]
+    assert resource.uri == "http://example.org"
+    assert resource.caption is None
+    resource.fetch()
+    assert resource.uri == "http://example.org/"
+    assert resource.caption == "index"
+
+    client.traverse("http://rels.example.org/blog")
+
+    resource = client.resources[0]
+    assert resource.uri == "http://example.org/blog"
+    assert resource.caption == "blog"
+
+    resource.fetch()
+
+    assert resource.uri == "http://example.org/blog?page=1"
+    assert resource.caption == "blog index"
+
+    about = resource.refs["about"][0]
+    assert about.uri == "http://example.org/blog/about"
+    assert about.caption == "about"
+
+    about.fetch()
+
+    assert about.uri == "http://example.org/blog/about"
+    assert about.caption == "about"
+
+    copyright = resource.refs["copyright"][0]
+    assert copyright.uri == "http://example.org/legal"
+    assert copyright.caption is None

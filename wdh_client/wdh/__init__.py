@@ -2,7 +2,8 @@ import httplib2
 
 from collections import defaultdict
 
-from .parser import parse, extract_properties, extract_references, extract_text
+from .parser import (extract_properties, extract_references, extract_metadata,
+        extract_text, parse)
 from .util import memoized_property
 
 
@@ -78,6 +79,12 @@ class Resource:
 
         self._content = self.retriever(self.uri)
         self.fetched = True
+
+        uri, title = extract_metadata(self.document)
+        if uri:
+            self.uri = uri
+        if title:
+            self.caption = title
 
     def missing_property_handler(self, key, props): # XXX: `props` unnecessary; identical to `self._props`!?
         if not self.fetched:

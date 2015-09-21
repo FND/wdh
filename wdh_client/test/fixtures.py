@@ -8,7 +8,8 @@ RESPONSES = {
     "http://example.org/blog": "example.org/blog.html",
     "http://example.org/blog/articles": "example.org/articles.html",
     "http://example.org/blog/articles/1": "example.org/article1.html",
-    "http://example.org/blog/articles/2": "example.org/article2.html"
+    "http://example.org/blog/articles/2": "example.org/article2.html",
+    "http://example.org/blog/about": "example.org/about.html"
 }
 
 
