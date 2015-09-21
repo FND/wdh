@@ -14,6 +14,7 @@ class Client:
 
     def enter(self, uri):
         self.resources = [Resource(uri, retriever=self._retrieve)]
+        return self
 
     def traverse(self, *rels):
         rel = rels[0]
@@ -28,6 +29,8 @@ class Client:
 
         if len(rels) > 1:
             self.traverse(*rels[1:])
+
+        return self
 
     def _retrieve(self, uri):
         args = { "method": "get" }
