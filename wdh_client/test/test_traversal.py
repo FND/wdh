@@ -8,7 +8,7 @@ def test_traversal():
     client.enter("http://example.org")
 
     assert len(client.resources) == 1
-    index = list(client.resources)[0]
+    index = client.resources[0]
     assert not index.fetched
 
     client.traverse("http://rels.example.org/service")
@@ -30,7 +30,7 @@ def test_multi_traversal():
             "http://rels.example.org/articles")
 
     assert len(client.resources) == 1
-    collection = list(client.resources)[0]
+    collection = client.resources[0]
     assert collection.uri == "http://example.org/blog/articles"
     assert collection.caption is None
 

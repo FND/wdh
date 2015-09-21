@@ -1,3 +1,5 @@
+import os
+
 from wdh import Client
 
 
@@ -80,4 +82,11 @@ class MockClient(Client):
         self._responses = responses
 
     def _retrieve(self, uri):
-        return self._responses[uri]
+        res = self._responses[uri]
+        return res() if callable(res) else res
+
+
+def loader(filepath):
+    filepath = os.path.join("test", "fixtures", *filepath.split("/"))
+    with open(filepath) as fh:
+        return fh.read()

@@ -9,7 +9,7 @@ def test_property_parsing():
     client.enter(uri)
 
     assert len(client.resources) == 1
-    article = list(client.resources)[0]
+    article = client.resources[0]
     assert not article.fetched
 
     assert article.props == {}

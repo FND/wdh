@@ -23,7 +23,7 @@ class Client:
 
             for resource in resource.refs.get(rel, []):
                 references.add(resource)
-        self.resources = references
+        self.resources = list(references)
 
         if len(rels) > 1:
             self.traverse(*rels[1:])
@@ -48,7 +48,7 @@ class Resource:
 
     @memoized_property
     def refs(self):
-        refs = defaultdict(set)
+        refs = defaultdict(list)
         for rel, uri, caption, props in extract_references(self.document):
             resource = Resource(uri, retriever=self.retriever, caption=caption)
 
@@ -57,8 +57,8 @@ class Resource:
                 for key, values in props: # XXX: does not belong here!?
                     properties[key] = values
 
-            refs[rel].add(resource)
-        return refs
+            refs[rel].append(resource) # TODO: dedup?
+        return dict(refs)
 
     @memoized_property
     def props(self):
@@ -66,6 +66,9 @@ class Resource:
 
     @memoized_property
     def document(self):
+        if not self.fetched:
+            self.fetch()
+
         return parse(self._content, self.uri)
 
     def fetch(self):
