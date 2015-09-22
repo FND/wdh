@@ -70,7 +70,7 @@ and thus apply to the associated resource.
             <a href="/authors/jod" rel="author">John Doe</a>
         </summary>
         <article>
-            <h1>Jane Doe</h1>
+            <h1>John Doe</h1>
             <a href="/authors/jad" rel="next">Jane Doe</a>
         </article>
     </details>
