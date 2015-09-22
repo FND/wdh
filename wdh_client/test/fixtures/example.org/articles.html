@@ -27,6 +27,29 @@
 			</details>
 		</li>
 	</ul>
+
+	<form action="/blog/articles" method="get"
+			data-rel="http://rels.example.org/articles">
+		<label for="search-query">search term</label>
+		<input type="search" name="query" id="search-query" required>
+
+		<button type="submit">filter articles</button>
+	</form>
+
+	<form action="/blog/articles" method="post"
+			data-rel="http://rels.example.org/article">
+		<label>
+			title:
+			<input type="text" name="title" required>
+		</label>
+
+		<label>
+			content:
+			<textarea name="content">lorem ipsum dolor sit amet</textarea>
+		</label>
+
+		<button type="submit">create article</button>
+	</form>
 </body>
 
 </html>

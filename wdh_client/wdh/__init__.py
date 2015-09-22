@@ -1,9 +1,9 @@
 import httplib2
 
-from collections import defaultdict
+from collections import namedtuple, defaultdict
 
-from .parser import (extract_properties, extract_references, extract_metadata,
-        extract_text, parse)
+from .parser import (extract_actions, extract_properties, extract_references,
+        extract_metadata, extract_text, parse)
 from .util import memoized_property
 
 
@@ -49,6 +49,13 @@ class Resource:
         self.caption = caption
         self.fetched = False
         self.retriever = retriever # XXX: awkward dependency
+
+    @memoized_property
+    def actions(self):
+        actions = defaultdict(lambda: defaultdict(list)) # `{ rel: method: [actions] } }`
+        for rel, uri, method, caption, fields in extract_actions(self.document):
+            actions[rel][method].append(Action(uri, caption, fields))
+        return dict(actions)
 
     @memoized_property
     def refs(self):
@@ -125,3 +132,6 @@ class PropertyList(dict):
             return super().__getitem__(key)
         except KeyError:
             return self.missing_handler(key, self)
+
+
+Action = namedtuple("Action", ["uri", "caption", "fields"])
