@@ -2,14 +2,11 @@
 a typical explorative usage scenario
 """
 
-from .fixtures import MockClient
+from .fixtures import MockClient, RESPONSES
 
 
 def test_exploration():
-    client = MockClient({
-        "http://example.org": "example.org/index.html",
-        "http://example.org/blog": "example.org/blog.html"
-    })
+    client = MockClient(RESPONSES)
     client.enter("http://example.org")
 
     assert len(client.resources) == 1
@@ -39,11 +36,7 @@ def test_exploration():
 
 
 def test_chaining():
-    client = (MockClient({
-        "http://example.org": "example.org/index.html",
-        "http://example.org/blog": "example.org/blog.html",
-        "http://example.org/blog/articles": "example.org/articles.html"
-    }).enter("http://example.org").
+    client = (MockClient(RESPONSES).enter("http://example.org").
             traverse("http://rels.example.org/blog").
             traverse("http://rels.example.org/articles"))
 

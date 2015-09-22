@@ -2,11 +2,8 @@ from .fixtures import MockClient, RESPONSES
 
 
 def test_property_parsing():
-    uri = "http://example.org/blog/articles/1"
-    client = MockClient({
-        uri: RESPONSES[uri]
-    })
-    client.enter(uri)
+    client = MockClient(RESPONSES)
+    client.enter("http://example.org/blog/articles/1")
 
     assert len(client.resources) == 1
     article = client.resources[0]
@@ -20,9 +17,8 @@ def test_property_parsing():
 
 
 def test_embedded_properties():
-    uri = "http://example.org/blog/articles"
     client = MockClient(RESPONSES)
-    client.enter(uri)
+    client.enter("http://example.org/blog/articles")
     client.traverse("http://rels.example.org/article")
 
     assert len(client.resources) == 2
